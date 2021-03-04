@@ -6,7 +6,6 @@ const fs = require("fs");
 // Set up for the Express App
 const app = express();
 const port = 1021;
-const mainDir = path.join(__dirname, "/public");
 
 // Sets up the Express app to handle data parsing
 app.use(express.static("public"));
@@ -15,12 +14,16 @@ app.use(express.json());
 
 //Get methods to grab all the required pages and the data to be displayed
 
+app.get("/", function(req, res){
+    res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
 app.get("/notes", function(req, res){
-    res.sendFile(path.join(mainDir, "notes.html"));
+    res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 app.get("*", function(req, res){
-    res.sendFile(path.join(mainDir, "index.html"));
+    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get("/api/notes", function(req, res){

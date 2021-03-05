@@ -1,21 +1,22 @@
 // Dependencies
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+var express = require('express');
+var path = require('path');
+var fs = require('fs');
 
 // Set up for the Express App
-const app = express();
-const port = 1021;
+var app = express();
+var PORT = process.env.PORT || 3000;
 
 // Sets up the Express app to handle data parsing
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
-//Get methods to grab all the required pages and the data to be displayed
+//Routes
 
 app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "public/index.html"));
+    res.send("Welcome to the homepage");
+    //res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get("/notes", function(req, res){
@@ -31,14 +32,14 @@ app.get("/api/notes", function(req, res){
 });
 
 app.get("/api/notes/:id", function(req, res){
-    let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     res.json(savedNotes[Number(req.params.id)]);
 });
 
 app.post("/api/notes", function(req, res){
-    let savedNotes = JSON.parse(fs.readFileSync("./db/db/json", "utf8"));
-    let newNote = req.body;
-    let uniqueID = (savedNotes.length).toString();
+    var savedNotes = JSON.parse(fs.readFileSync("./db/db/json", "utf8"));
+    var newNote = req.body;
+    var uniqueID = (savedNotes.length).toString();
 
     newNote.id = uniqueID;
     savedNotes.push(newNote);
@@ -49,9 +50,9 @@ app.post("/api/notes", function(req, res){
 });
 
 app.delete("api/notes/:id", function(req, res){
-    let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    let noteID = req.params.id;
-    let newID = 0;
+    var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    var noteID = req.params.id;
+    var newID = 0;
 
     console.log(`Deleting note with following ID ${noteID}`);
     savedNotes = savedNotes.filter(currNote => {
@@ -67,6 +68,6 @@ app.delete("api/notes/:id", function(req, res){
     res.json(savedNotes);
 });
 
-app.listen(port, () => {
-    console.log(`Now listening to https://localhost:${port}`);
+app.listen(PORT, function () {
+    console.log(`Now listening to http://localhost:${PORT}`);
 })

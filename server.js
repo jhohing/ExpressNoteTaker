@@ -14,11 +14,6 @@ app.use(express.json());
 
 //Routes
 
-app.get("/", function(req, res){
-    res.send("Welcome to the homepage");
-    //res.sendFile(path.join(__dirname, "public/index.html"));
-});
-
 app.get("/notes", function(req, res){
     res.sendFile(path.join(__dirname, "public/notes.html"));
 });
@@ -28,7 +23,7 @@ app.get("*", function(req, res){
 });
 
 app.get("/api/notes", function(req, res){
-    var data = JSON.parse(fs.readFile("./db/db.json", "utf8"));
+    var data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     res.json(data);
 });
 

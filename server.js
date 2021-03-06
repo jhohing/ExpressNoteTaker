@@ -37,7 +37,7 @@ app.get("/api/notes/:id", function(req, res){
 });
 
 app.post("/api/notes", function(req, res){
-    var savedNotes = JSON.parse(fs.readFileSync("./db/db/json", "utf8"));
+    var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     var newNote = req.body;
     var uniqueID = (savedNotes.length).toString();
 

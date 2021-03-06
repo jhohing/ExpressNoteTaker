@@ -28,7 +28,7 @@ app.get("*", function(req, res){
 });
 
 app.get("/api/notes", function(req, res){
-    let data = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json"), "utf8"));
+    var data = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json"), "utf8"));
     res.json(data);
 });
 

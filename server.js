@@ -32,10 +32,10 @@ app.get("/api/notes", function(req, res){
     res.json(data);
 });
 
-app.get("/api/notes/:id", function(req, res){
-    var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    res.json(savedNotes[Number(req.params.id)]);
-});
+// app.get("/api/notes/:id", function(req, res){
+//     var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+//     res.json(savedNotes[Number(req.params.id)]);
+// });
 
 app.post("/api/notes", function(req, res){
     var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));

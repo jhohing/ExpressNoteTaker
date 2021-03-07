@@ -14,30 +14,27 @@ app.use(express.json());
 
 //Routes
 
-app.get("/notes", function(req, res){
+app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
-app.get("*", function(req, res){
+app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-app.get("/api/notes", function(req, res){
+app.get("/api/notes", (req, res) => {
     var data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    console.log(data);
     res.json(data);
 });
 
-// app.get("/api/notes/:id", function(req, res){
-//     var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-//     res.json(savedNotes[Number(req.params.id)]);
-// });
-
-app.post("/api/notes", function(req, res){
+app.post("/api/notes", (req, res) => {
     var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     var newNote = req.body;
-    var uniqueID = (savedNotes.length).toString();
+    var id = savedNotes.length
 
-    newNote.id = uniqueID;
+    
+    newNote.id = id + 1;
     savedNotes.push(newNote);
 
     fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
@@ -45,25 +42,25 @@ app.post("/api/notes", function(req, res){
     res.json(savedNotes);
 });
 
-app.delete("api/notes/:id", function(req, res){
+app.delete("/api/notes/:id", (req, res) => {
     var savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    var noteID = req.params.id;
-    var newID = 0;
+    var noteID = parseInt(req.params.id);
+    var newID = 1;
 
     console.log(`Deleting note with following ID ${noteID}`);
     savedNotes = savedNotes.filter(currNote => {
         return currNote.id != noteID;
     });
 
-    for(currNote of savedNotes){
+    for (currNote of savedNotes) {
         currNote.id = newID.toString();
         newID++;
-    };
+    }
 
     fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
     res.json(savedNotes);
 });
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
     console.log(`Now listening to http://localhost:${PORT}`);
 })
